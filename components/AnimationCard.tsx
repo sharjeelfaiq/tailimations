@@ -1,21 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import type { AnimationExample } from "@/data/animations";
+import { getPreviewClassName } from "@/lib/animationPreview";
 
 type AnimationCardProps = {
   animation: AnimationExample;
   onSelect: (animation: AnimationExample) => void;
 };
 
+type AnimationMode = "idle" | "hover";
+
 export function AnimationCard({ animation, onSelect }: AnimationCardProps) {
+  const [animationMode, setAnimationMode] = useState<AnimationMode>("idle");
+  const previewClassName = getPreviewClassName(
+    animation,
+    animationMode === "hover",
+  );
+
   return (
     <button
       className="group flex h-full min-h-72 flex-col overflow-hidden rounded-md border border-zinc-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-500 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
       onClick={() => onSelect(animation)}
+      onMouseLeave={() => setAnimationMode("idle")}
       type="button"
     >
       <div className="flex min-h-40 items-center justify-center border-b border-zinc-100 bg-zinc-50 p-8">
-        <div className={animation.elementClassName}>{animation.title}</div>
+        <div
+          className={previewClassName}
+          onMouseEnter={() => setAnimationMode("hover")}
+          onMouseLeave={() => setAnimationMode("idle")}
+        >
+          {animation.title}
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-4 p-5">
         <div className="flex items-start justify-between gap-4">

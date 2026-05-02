@@ -11,7 +11,9 @@ export type AnimationExample = {
   category: AnimationCategory;
   description: string;
   previewClassName: string;
-  elementClassName: string;
+  elementBaseClassName: string;
+  activeClassName: string;
+  loopIntervalMs?: number;
   snippet: string;
   css?: string;
 };
@@ -34,7 +36,9 @@ export const animations: AnimationExample[] = [
     category: "Entrance",
     description: "A compact entrance for cards, menus, and inline panels.",
     previewClassName: "animate-fade-rise",
-    elementClassName: `${basePill} animate-fade-rise`,
+    elementBaseClassName: basePill,
+    activeClassName: "animate-fade-rise",
+    loopIntervalMs: 2400,
     snippet:
       '<div className="animate-fade-rise rounded-md bg-white p-4 shadow-sm">Fade Rise</div>',
     css: `@theme inline {
@@ -52,7 +56,9 @@ export const animations: AnimationExample[] = [
     category: "Entrance",
     description: "A snappy scale-in motion for selected or newly inserted UI.",
     previewClassName: "animate-scale-pop",
-    elementClassName: `${basePill} animate-scale-pop`,
+    elementBaseClassName: basePill,
+    activeClassName: "animate-scale-pop",
+    loopIntervalMs: 2200,
     snippet:
       '<div className="animate-scale-pop rounded-md bg-white p-4 shadow-sm">Scale Pop</div>',
     css: `@theme inline {
@@ -71,7 +77,9 @@ export const animations: AnimationExample[] = [
     category: "Attention",
     description: "A restrained pulse for pending states and gentle emphasis.",
     previewClassName: "animate-soft-pulse",
-    elementClassName: `${basePill} animate-soft-pulse`,
+    elementBaseClassName: basePill,
+    activeClassName: "animate-soft-pulse",
+    loopIntervalMs: 2600,
     snippet:
       '<div className="animate-soft-pulse rounded-md bg-white p-4 shadow-sm">Soft Pulse</div>',
     css: `@theme inline {
@@ -89,7 +97,9 @@ export const animations: AnimationExample[] = [
     category: "Attention",
     description: "A short correction cue for invalid fields or interrupted actions.",
     previewClassName: "animate-wobble",
-    elementClassName: `${basePill} animate-wobble`,
+    elementBaseClassName: basePill,
+    activeClassName: "animate-wobble",
+    loopIntervalMs: 2400,
     snippet:
       '<div className="animate-wobble rounded-md bg-white p-4 shadow-sm">Wobble</div>',
     css: `@theme inline {
@@ -110,8 +120,10 @@ export const animations: AnimationExample[] = [
     category: "Loaders",
     description: "A small loading indicator for buttons or compact empty states.",
     previewClassName: "animate-orbit",
-    elementClassName:
-      "relative h-16 w-16 rounded-full border border-zinc-200 bg-white shadow-sm before:absolute before:left-1/2 before:top-1/2 before:h-3 before:w-3 before:-translate-x-1/2 before:-translate-y-7 before:rounded-full before:bg-cyan-500 before:content-[''] animate-orbit",
+    elementBaseClassName:
+      "relative h-16 w-16 rounded-full border border-zinc-200 bg-white shadow-sm before:absolute before:left-1/2 before:top-1/2 before:h-3 before:w-3 before:-translate-x-1/2 before:-translate-y-7 before:rounded-full before:bg-cyan-500 before:content-['']",
+    activeClassName: "animate-orbit",
+    loopIntervalMs: 1800,
     snippet: `<div className="relative h-8 w-8 animate-orbit rounded-full border border-zinc-200 before:absolute before:left-1/2 before:top-1/2 before:h-2 before:w-2 before:-translate-x-1/2 before:-translate-y-4 before:rounded-full before:bg-cyan-500 before:content-['']" />`,
     css: `@theme inline {
   --animate-orbit: orbit 1.1s linear infinite;
@@ -127,8 +139,10 @@ export const animations: AnimationExample[] = [
     category: "Loaders",
     description: "A copy-paste progress shimmer that fits table and form rows.",
     previewClassName: "animate-bar-sweep",
-    elementClassName:
-      "h-3 w-44 overflow-hidden rounded-full bg-zinc-200 before:block before:h-full before:w-1/2 before:rounded-full before:bg-emerald-500 before:content-[''] before:animate-bar-sweep",
+    elementBaseClassName:
+      "h-3 w-44 overflow-hidden rounded-full bg-zinc-200 before:block before:h-full before:w-1/2 before:rounded-full before:bg-emerald-500 before:content-['']",
+    activeClassName: "before:animate-bar-sweep",
+    loopIntervalMs: 2000,
     snippet: `<div className="h-2 w-40 overflow-hidden rounded-full bg-zinc-200 before:block before:h-full before:w-1/2 before:rounded-full before:bg-emerald-500 before:content-[''] before:animate-bar-sweep" />`,
     css: `@theme inline {
   --animate-bar-sweep: bar-sweep 1.25s ease-in-out infinite;
@@ -145,8 +159,10 @@ export const animations: AnimationExample[] = [
     category: "Text",
     description: "A masked title reveal for headings and empty-state labels.",
     previewClassName: "animate-text-reveal",
-    elementClassName:
-      "inline-block overflow-hidden text-2xl font-bold text-zinc-950 [clip-path:inset(0_100%_0_0)] animate-text-reveal",
+    elementBaseClassName:
+      "inline-block overflow-hidden text-2xl font-bold text-zinc-950",
+    activeClassName: "[clip-path:inset(0_100%_0_0)] animate-text-reveal",
+    loopIntervalMs: 2800,
     snippet:
       '<span className="inline-block animate-text-reveal overflow-hidden [clip-path:inset(0_100%_0_0)]">Text Reveal</span>',
     css: `@theme inline {
@@ -163,8 +179,10 @@ export const animations: AnimationExample[] = [
     category: "Text",
     description: "A looped text accent for small badges or feature labels.",
     previewClassName: "animate-letter-float",
-    elementClassName:
-      "inline-flex min-h-16 items-center rounded-md px-5 text-2xl font-bold text-rose-600 animate-letter-float",
+    elementBaseClassName:
+      "inline-flex min-h-16 items-center rounded-md px-5 text-2xl font-bold text-rose-600",
+    activeClassName: "animate-letter-float",
+    loopIntervalMs: 2400,
     snippet:
       '<span className="inline-flex animate-letter-float text-xl font-bold text-rose-600">Float</span>',
     css: `@theme inline {
@@ -182,7 +200,9 @@ export const animations: AnimationExample[] = [
     category: "Hover",
     description: "A durable card hover effect using only transition utilities.",
     previewClassName: "transition-transform duration-300 hover:-translate-y-1",
-    elementClassName: `${basePill} transition-transform duration-300 hover:-translate-y-1`,
+    elementBaseClassName: `${basePill} transition-transform duration-300`,
+    activeClassName: "-translate-y-1",
+    loopIntervalMs: 1800,
     snippet:
       '<button className="rounded-md bg-white p-4 shadow-sm transition-transform duration-300 hover:-translate-y-1">Hover Lift</button>',
   },
@@ -193,7 +213,10 @@ export const animations: AnimationExample[] = [
     description: "A focusable hover state for call-to-action controls.",
     previewClassName:
       "transition duration-300 hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]",
-    elementClassName: `${basePill} transition duration-300 hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]`,
+    elementBaseClassName: `${basePill} transition duration-300`,
+    activeClassName:
+      "border-amber-300 shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]",
+    loopIntervalMs: 2000,
     snippet:
       '<button className="rounded-md border border-zinc-200 bg-white px-4 py-3 transition duration-300 hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]">Hover Glow</button>',
   },

@@ -2,31 +2,57 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { AnimationExample } from "@/data/animations";
+import {
+  getLoopInterval,
+  getPreviewClassName,
+} from "@/lib/animationPreview";
 import { copyToClipboard } from "@/lib/clipboard";
 
 type AnimationModalProps = {
-  animation: AnimationExample | null;
+  animation: AnimationExample;
   onClose: () => void;
 };
 
+type AnimationMode = "idle" | "loop";
+
 export function AnimationModal({ animation, onClose }: AnimationModalProps) {
   const [copied, setCopied] = useState<"snippet" | "css" | "all" | null>(null);
+  const [animationMode, setAnimationMode] = useState<AnimationMode>("idle");
+  const [loopCycle, setLoopCycle] = useState(0);
+
+  const previewClassName = useMemo(() => {
+    return getPreviewClassName(animation, animationMode === "loop");
+  }, [animation, animationMode]);
 
   const fullCode = useMemo(() => {
-    if (!animation) {
-      return "";
-    }
-
     return animation.css
       ? `${animation.snippet}\n\n${animation.css}`
       : animation.snippet;
   }, [animation]);
 
   useEffect(() => {
-    if (!animation) {
-      return;
-    }
+    let frame = window.requestAnimationFrame(() => {
+      setAnimationMode("loop");
+    });
+    const restartAnimation = () => {
+      setAnimationMode("idle");
+      setLoopCycle((cycle) => cycle + 1);
+      frame = window.requestAnimationFrame(() => {
+        setAnimationMode("loop");
+      });
+    };
+    const interval = window.setInterval(
+      restartAnimation,
+      getLoopInterval(animation),
+    );
 
+    return () => {
+      window.clearInterval(interval);
+      window.cancelAnimationFrame(frame);
+    };
+  }, [animation]);
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
@@ -50,10 +76,6 @@ export function AnimationModal({ animation, onClose }: AnimationModalProps) {
     const timer = window.setTimeout(() => setCopied(null), 1600);
     return () => window.clearTimeout(timer);
   }, [copied]);
-
-  if (!animation) {
-    return null;
-  }
 
   async function handleCopy(kind: "snippet" | "css" | "all", value: string) {
     await copyToClipboard(value);
@@ -97,7 +119,9 @@ export function AnimationModal({ animation, onClose }: AnimationModalProps) {
 
         <div className="grid gap-0 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div className="flex min-h-72 items-center justify-center border-b border-zinc-200 bg-zinc-50 p-8 lg:border-b-0 lg:border-r">
-            <div className={animation.elementClassName}>{animation.title}</div>
+            <div className={previewClassName} key={`${animation.id}-${loopCycle}`}>
+              {animation.title}
+            </div>
           </div>
 
           <div className="space-y-5 p-5 sm:p-6">

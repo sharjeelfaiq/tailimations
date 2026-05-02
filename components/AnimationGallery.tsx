@@ -110,10 +110,13 @@ export function AnimationGallery() {
         </section>
       </div>
 
-      <AnimationModal
-        animation={selectedAnimation}
-        onClose={() => setSelectedAnimation(null)}
-      />
+      {selectedAnimation ? (
+        <AnimationModal
+          animation={selectedAnimation}
+          key={selectedAnimation.id}
+          onClose={() => setSelectedAnimation(null)}
+        />
+      ) : null}
     </main>
   );
 }
