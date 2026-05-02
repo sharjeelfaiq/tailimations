@@ -37,17 +37,18 @@ export const animations: AnimationExample[] = [
     description: "A compact entrance for cards, menus, and inline panels.",
     previewClassName: "animate-fade-rise",
     elementBaseClassName: basePill,
-    activeClassName: "animate-fade-rise",
+    activeClassName:
+      "translate-y-[18px] opacity-0 will-change-[opacity,transform] animate-fade-rise",
     loopIntervalMs: 2600,
     snippet:
-      '<div className="animate-fade-rise rounded-md bg-white p-4 text-zinc-950 shadow-sm dark:bg-zinc-900 dark:text-zinc-50">Fade Rise</div>',
+      '<div className="translate-y-[18px] animate-fade-rise rounded-md bg-white p-4 text-zinc-950 opacity-0 shadow-sm will-change-[opacity,transform] dark:bg-zinc-900 dark:text-zinc-50">Fade Rise</div>',
     css: `@theme inline {
   --animate-fade-rise: fade-rise 820ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes fade-rise {
   0% { opacity: 0; transform: translateY(18px); }
-  18% { opacity: 0; transform: translateY(18px); }
+  12% { opacity: 0; transform: translateY(18px); }
   100% { opacity: 1; transform: translateY(0); }
 }`,
   },
@@ -58,10 +59,11 @@ export const animations: AnimationExample[] = [
     description: "A snappy scale-in motion for selected or newly inserted UI.",
     previewClassName: "animate-scale-pop",
     elementBaseClassName: basePill,
-    activeClassName: "animate-scale-pop",
+    activeClassName:
+      "scale-90 opacity-0 will-change-[opacity,transform] animate-scale-pop",
     loopIntervalMs: 2200,
     snippet:
-      '<div className="animate-scale-pop rounded-md bg-white p-4 text-zinc-950 shadow-sm dark:bg-zinc-900 dark:text-zinc-50">Scale Pop</div>',
+      '<div className="scale-90 animate-scale-pop rounded-md bg-white p-4 text-zinc-950 opacity-0 shadow-sm will-change-[opacity,transform] dark:bg-zinc-900 dark:text-zinc-50">Scale Pop</div>',
     css: `@theme inline {
   --animate-scale-pop: scale-pop 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -214,12 +216,12 @@ export const animations: AnimationExample[] = [
     category: "Hover",
     description: "A focusable hover state for call-to-action controls.",
     previewClassName:
-      "transition duration-500 ease-out hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] dark:hover:border-amber-300 dark:hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.3)]",
-    elementBaseClassName: `${basePill} relative z-0 overflow-visible transition duration-500 ease-out dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50`,
+      "transition-shadow duration-300 ease-out hover:border-sky-300 hover:shadow-[0_18px_44px_rgb(56_189_248_/_0.34),0_0_0_1px_rgb(125_211_252_/_0.45)] dark:hover:border-sky-400 dark:hover:shadow-[0_18px_48px_rgb(14_165_233_/_0.52),0_0_0_1px_rgb(56_189_248_/_0.5)]",
+    elementBaseClassName: `${basePill} relative z-0 overflow-visible transition-shadow duration-300 ease-out dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50`,
     activeClassName:
-      "border-amber-300 shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] dark:border-amber-300 dark:shadow-[0_18px_40px_rgb(245_158_11_/_0.3)]",
+      "border-sky-300 shadow-[0_18px_44px_rgb(56_189_248_/_0.34),0_0_0_1px_rgb(125_211_252_/_0.45)] dark:border-sky-400 dark:shadow-[0_18px_48px_rgb(14_165_233_/_0.52),0_0_0_1px_rgb(56_189_248_/_0.5)]",
     loopIntervalMs: 2000,
     snippet:
-      '<button className="rounded-md border border-zinc-200 bg-white px-4 py-3 text-zinc-950 transition duration-500 ease-out hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] focus-visible:border-amber-300 focus-visible:shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50">Hover Glow</button>',
+      '<button className="rounded-md border border-zinc-200 bg-white px-4 py-3 text-zinc-950 transition-shadow duration-300 ease-out hover:border-sky-300 hover:shadow-[0_18px_44px_rgb(56_189_248_/_0.34),0_0_0_1px_rgb(125_211_252_/_0.45)] focus-visible:border-sky-300 focus-visible:shadow-[0_18px_44px_rgb(56_189_248_/_0.34),0_0_0_1px_rgb(125_211_252_/_0.45)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:hover:border-sky-400 dark:hover:shadow-[0_18px_48px_rgb(14_165_233_/_0.52),0_0_0_1px_rgb(56_189_248_/_0.5)]">Hover Glow</button>',
   },
 ];

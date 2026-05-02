@@ -5,8 +5,8 @@ import type { AnimationExample } from "@/data/animations";
 import {
   getLoopInterval,
   getPreviewClassName,
-} from "@/lib/animationPreview";
-import { copyToClipboard } from "@/lib/clipboard";
+} from "@/utils/animationPreview";
+import { copyToClipboard } from "@/utils/clipboard";
 
 type AnimationModalProps = {
   animations: AnimationExample[];
@@ -68,6 +68,7 @@ export function AnimationModal({
   const animation = animations[currentIndex];
   const canGoPrevious = currentIndex > 0;
   const canGoNext = currentIndex < animations.length - 1;
+  const hasTailwindCode = Boolean(animation.css);
 
   const previewClassName = useMemo(() => {
     return getPreviewClassName(animation, animationMode === "loop");
@@ -76,12 +77,12 @@ export function AnimationModal({
   const fullCode = useMemo(() => {
     const sections = [`<!-- Markup -->\n${animation.snippet}`];
 
-    if (animation.css) {
+    if (hasTailwindCode) {
       sections.push(`/* Tailwind CSS */\n${animation.css}`);
     }
 
     return sections.join("\n\n");
-  }, [animation]);
+  }, [animation, hasTailwindCode]);
 
   const handleNext = useCallback(() => {
     if (!canGoNext) {
@@ -239,7 +240,13 @@ export function AnimationModal({
           </div>
 
           <div className="flex min-h-0 min-w-0 flex-col gap-5 overflow-hidden p-5 sm:p-6">
-            <section className="flex min-h-0 flex-1 flex-col">
+            <section
+              className={
+                hasTailwindCode
+                  ? "flex min-h-0 flex-1 basis-0 flex-col"
+                  : "flex min-h-0 flex-1 flex-col"
+              }
+            >
               <div className="mb-2 flex items-center justify-between gap-3">
                 <h3 className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
                   Markup
@@ -257,8 +264,8 @@ export function AnimationModal({
               </pre>
             </section>
 
-            {animation.css ? (
-              <section className="flex min-h-0 flex-1 flex-col">
+            {hasTailwindCode ? (
+              <section className="flex min-h-0 flex-1 basis-0 flex-col">
                 <div className="mb-2 flex items-center justify-between gap-3">
                   <h3 className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
                     Tailwind CSS

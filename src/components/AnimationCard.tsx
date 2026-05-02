@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { AnimationExample } from "@/data/animations";
-import { getPreviewClassName } from "@/lib/animationPreview";
+import { getPreviewClassName } from "@/utils/animationPreview";
 
 type AnimationCardProps = {
   animation: AnimationExample;
