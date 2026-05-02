@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+:root.dark {
+  --background: #09090b;
+  --foreground: #f4f4f5;
 }
 
 @theme inline {
@@ -18,13 +25,6 @@
   --animate-bar-sweep: bar-sweep 1.25s ease-in-out infinite;
   --animate-text-reveal: text-reveal 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-letter-float: letter-float 1.8s ease-in-out infinite;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
