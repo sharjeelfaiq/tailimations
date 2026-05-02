@@ -38,16 +38,17 @@ export const animations: AnimationExample[] = [
     previewClassName: "animate-fade-rise",
     elementBaseClassName: basePill,
     activeClassName: "animate-fade-rise",
-    loopIntervalMs: 2400,
+    loopIntervalMs: 2600,
     snippet:
-      '<div className="animate-fade-rise rounded-md bg-white p-4 shadow-sm">Fade Rise</div>',
+      '<div className="animate-fade-rise rounded-md bg-white p-4 text-zinc-950 shadow-sm dark:bg-zinc-900 dark:text-zinc-50">Fade Rise</div>',
     css: `@theme inline {
-  --animate-fade-rise: fade-rise 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-fade-rise: fade-rise 820ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes fade-rise {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; transform: translateY(18px); }
+  18% { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
 }`,
   },
   {
@@ -60,14 +61,14 @@ export const animations: AnimationExample[] = [
     activeClassName: "animate-scale-pop",
     loopIntervalMs: 2200,
     snippet:
-      '<div className="animate-scale-pop rounded-md bg-white p-4 shadow-sm">Scale Pop</div>',
+      '<div className="animate-scale-pop rounded-md bg-white p-4 text-zinc-950 shadow-sm dark:bg-zinc-900 dark:text-zinc-50">Scale Pop</div>',
     css: `@theme inline {
-  --animate-scale-pop: scale-pop 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-pop: scale-pop 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes scale-pop {
-  0% { opacity: 0; transform: scale(0.92); }
-  70% { opacity: 1; transform: scale(1.03); }
+  0% { opacity: 0; transform: scale(0.9); }
+  45% { opacity: 1; transform: scale(1.035); }
   100% { opacity: 1; transform: scale(1); }
 }`,
   },
@@ -160,16 +161,17 @@ export const animations: AnimationExample[] = [
     description: "A masked title reveal for headings and empty-state labels.",
     previewClassName: "animate-text-reveal",
     elementBaseClassName:
-      "inline-block overflow-hidden text-2xl font-bold text-zinc-950",
+      "inline-block overflow-hidden text-2xl font-bold text-zinc-950 dark:text-zinc-50",
     activeClassName: "[clip-path:inset(0_100%_0_0)] animate-text-reveal",
     loopIntervalMs: 2800,
     snippet:
-      '<span className="inline-block animate-text-reveal overflow-hidden [clip-path:inset(0_100%_0_0)]">Text Reveal</span>',
+      '<span className="inline-block animate-text-reveal overflow-hidden text-zinc-950 [clip-path:inset(0_100%_0_0)] dark:text-zinc-50">Text Reveal</span>',
     css: `@theme inline {
   --animate-text-reveal: text-reveal 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes text-reveal {
+  from { clip-path: inset(0 100% 0 0); }
   to { clip-path: inset(0 0 0 0); }
 }`,
   },
@@ -212,12 +214,12 @@ export const animations: AnimationExample[] = [
     category: "Hover",
     description: "A focusable hover state for call-to-action controls.",
     previewClassName:
-      "transition duration-300 hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]",
-    elementBaseClassName: `${basePill} transition duration-300`,
+      "transition duration-500 ease-out hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] dark:hover:border-amber-300 dark:hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.3)]",
+    elementBaseClassName: `${basePill} relative z-0 overflow-visible transition duration-500 ease-out dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50`,
     activeClassName:
-      "border-amber-300 shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]",
+      "border-amber-300 shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] dark:border-amber-300 dark:shadow-[0_18px_40px_rgb(245_158_11_/_0.3)]",
     loopIntervalMs: 2000,
     snippet:
-      '<button className="rounded-md border border-zinc-200 bg-white px-4 py-3 transition duration-300 hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.28)]">Hover Glow</button>',
+      '<button className="rounded-md border border-zinc-200 bg-white px-4 py-3 text-zinc-950 transition duration-500 ease-out hover:border-amber-300 hover:shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] focus-visible:border-amber-300 focus-visible:shadow-[0_18px_40px_rgb(245_158_11_/_0.34)] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50">Hover Glow</button>',
   },
 ];
