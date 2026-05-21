@@ -28,6 +28,7 @@ export function CategoryTabs({
 
         return (
           <button
+            aria-controls="animation-gallery-panel"
             aria-selected={isActive}
             className={[
               "min-h-11 shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition",
@@ -36,6 +37,7 @@ export function CategoryTabs({
                 ? "border-zinc-950 bg-zinc-950 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950"
                 : "border-zinc-200 bg-white text-zinc-700 hover:border-cyan-500 hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-cyan-400 dark:hover:text-white",
             ].join(" ")}
+            id={`tab-${category.toLowerCase()}`}
             key={category}
             onClick={() => onChange(category)}
             role="tab"

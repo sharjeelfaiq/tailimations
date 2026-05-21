@@ -11,6 +11,10 @@ export async function copyToClipboard(value: string) {
   textArea.style.opacity = "0";
   document.body.appendChild(textArea);
   textArea.select();
-  document.execCommand("copy");
+  const didCopy = document.execCommand("copy");
   document.body.removeChild(textArea);
+
+  if (!didCopy) {
+    throw new Error("Unable to copy to clipboard.");
+  }
 }

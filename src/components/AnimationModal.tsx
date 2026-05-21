@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AnimationExample } from "@/data/animations";
 import {
   getLoopInterval,
@@ -65,6 +65,7 @@ export function AnimationModal({
   const [copied, setCopied] = useState<"snippet" | "css" | "all" | null>(null);
   const [animationMode, setAnimationMode] = useState<AnimationMode>("idle");
   const [loopCycle, setLoopCycle] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
   const animation = animations[currentIndex];
   const canGoPrevious = currentIndex > 0;
   const canGoNext = currentIndex < animations.length - 1;
@@ -75,7 +76,7 @@ export function AnimationModal({
   }, [animation, animationMode]);
 
   const fullCode = useMemo(() => {
-    const sections = [`<!-- Markup -->\n${animation.snippet}`];
+    const sections = [`{/* JSX */}\n${animation.snippet}`];
 
     if (hasTailwindCode) {
       sections.push(`/* Tailwind CSS */\n${animation.css}`);
@@ -129,10 +130,43 @@ export function AnimationModal({
   }, [animation]);
 
   useEffect(() => {
+    const previousActiveElement = document.activeElement;
+    const getFocusableElements = () =>
+      Array.from(
+        modalRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((element) => !element.hasAttribute("disabled"));
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
         return;
+      }
+
+      if (event.key === "Tab") {
+        const focusableElements = getFocusableElements();
+
+        if (focusableElements.length === 0) {
+          event.preventDefault();
+          modalRef.current?.focus();
+          return;
+        }
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+          return;
+        }
+
+        if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+          return;
+        }
       }
 
       if (event.key === "ArrowRight") {
@@ -149,10 +183,14 @@ export function AnimationModal({
 
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
+    modalRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
+      if (previousActiveElement instanceof HTMLElement) {
+        previousActiveElement.focus();
+      }
     };
   }, [handleNext, handlePrevious, onClose]);
 
@@ -172,6 +210,7 @@ export function AnimationModal({
 
   return (
     <div
+      aria-labelledby="modal-title"
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-end justify-center overflow-x-hidden bg-zinc-950/55 px-3 py-4 dark:bg-black/70 sm:items-center sm:px-6 md:px-10"
       role="dialog"
@@ -182,13 +221,20 @@ export function AnimationModal({
         onClick={onClose}
         type="button"
       />
-      <div className="relative flex h-[calc(100vh-2rem)] w-full max-w-6xl flex-col overflow-hidden rounded-md bg-white shadow-xl dark:bg-zinc-900 sm:h-[90vh] sm:max-h-[52rem]">
+      <div
+        className="relative flex h-[calc(100vh-2rem)] w-full max-w-6xl flex-col overflow-hidden rounded-md bg-white shadow-xl outline-none dark:bg-zinc-900 sm:h-[90vh] sm:max-h-[52rem]"
+        ref={modalRef}
+        tabIndex={-1}
+      >
         <div className="flex shrink-0 flex-col gap-4 border-b border-zinc-200 p-5 dark:border-zinc-800 sm:flex-row sm:items-start sm:justify-between sm:p-6">
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase text-cyan-700 dark:text-cyan-400">
               {animation.category}
             </p>
-            <h2 className="mt-1 text-xl font-semibold text-zinc-950 dark:text-zinc-50 sm:text-2xl">
+            <h2
+              className="mt-1 text-xl font-semibold text-zinc-950 dark:text-zinc-50 sm:text-2xl"
+              id="modal-title"
+            >
               {animation.title}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600 dark:text-zinc-400">
@@ -249,7 +295,7 @@ export function AnimationModal({
             >
               <div className="mb-2 flex items-center justify-between gap-3">
                 <h3 className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
-                  Markup
+                  JSX
                 </h3>
                 <button
                   className="min-h-11 rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:border-cyan-500 hover:text-zinc-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-cyan-400 dark:hover:text-white sm:min-h-0"

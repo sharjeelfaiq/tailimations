@@ -122,7 +122,7 @@ export function AnimationGallery() {
                 Runtime
               </dt>
               <dd className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
-                0
+                CSS
               </dd>
             </div>
           </dl>
@@ -136,8 +136,10 @@ export function AnimationGallery() {
         />
 
         <section
-          aria-label="Animation gallery"
+          aria-labelledby={`tab-${activeCategory.toLowerCase()}`}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+          id="animation-gallery-panel"
+          role="tabpanel"
         >
           {filteredAnimations.map((animation) => (
             <AnimationCard
